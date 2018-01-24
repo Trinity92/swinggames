@@ -29,4 +29,9 @@ public class XYCoord {
         return (o != null && this.getClass().isInstance(o) && ((XYCoord)o).getX() == this.x && ((XYCoord)o).getY() == this.y);
     }
     
+    @Override
+    public String toString() {
+        return "[" + this.x + "," + this.y + "]";
+    }
+    
 }

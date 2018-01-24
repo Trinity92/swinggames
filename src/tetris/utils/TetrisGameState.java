@@ -32,6 +32,7 @@ public class TetrisGameState {
             tetriminoBag.add(new STetrimino());
             tetriminoBag.add(new TTetrimino());
             tetriminoBag.add(new ZTetrimino());
+            tetriminosOnField.clear();
         }
         return instance;
     }

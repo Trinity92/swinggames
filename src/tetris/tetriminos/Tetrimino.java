@@ -28,11 +28,13 @@ public abstract class Tetrimino {
         Color originalColor = g.getColor();
         g.setColor(color);
         for(XYCoord xyc : shapeCoords) {
-            g.fillRect(xyc.getX()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getY()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getX()+TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getY()+TetrisMainFrame.SINGLE_BLOCK_RADIUS);
+            g.fillRect(xyc.getX()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getY()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, TetrisMainFrame.SINGLE_BLOCK_RADIUS*2, TetrisMainFrame.SINGLE_BLOCK_RADIUS*2);
+            System.out.println(xyc);
         }
         g.setColor(Color.BLACK);
         for(XYCoord xyc : shapeCoords) {
-            g.drawRect(xyc.getX()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getY()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getX()+TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getY()+TetrisMainFrame.SINGLE_BLOCK_RADIUS);
+            g.drawRect(xyc.getX()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, xyc.getY()-TetrisMainFrame.SINGLE_BLOCK_RADIUS, TetrisMainFrame.SINGLE_BLOCK_RADIUS*2, TetrisMainFrame.SINGLE_BLOCK_RADIUS*2);
+            System.out.println(xyc);
         }
         g.setColor(originalColor);
     }
