@@ -5,9 +5,7 @@
  */
 package tetris.gui;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import tetris.tetriminos.Tetrimino;
 import tetris.utils.TetrisGameState;
 
@@ -28,11 +26,9 @@ public class TetrisPanel extends javax.swing.JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for(Tetrimino t : TetrisGameState.getInstance().getTetriminosOnField()) {
-            System.out.println(t);
             t.paintShape(g);
         }
         if(TetrisGameState.getInstance().getFallingTetrimino() != null) TetrisGameState.getInstance().getFallingTetrimino().paintShape(g);
-        System.out.println("paintComponent()");
     }
 
     /**

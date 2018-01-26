@@ -7,9 +7,9 @@ package tetris.tetriminos;
 
 import java.awt.Color;
 import tetris.utils.Orientation;
-import java.awt.Graphics;
 import tetris.utils.XYCoord;
 import tetris.gui.TetrisMainFrame;
+import tetris.utils.TetrisGameState;
 
 /**
  *
@@ -18,16 +18,15 @@ import tetris.gui.TetrisMainFrame;
 public class LTetrimino extends Tetrimino {
 
     public LTetrimino() {
-        // spawn tetrimino on 4th column of the spawn row and 4th-6th of the row below
-        this(new XYCoord(TetrisMainFrame.SINGLE_BLOCK_RADIUS*8, 0));
+        // spawn tetrimino on 6th column of the spawn row and 4th-6th of the row below
+        this(new XYCoord(TetrisGameState.SINGLE_BLOCK_RADIUS*12, TetrisGameState.SINGLE_BLOCK_RADIUS*2));
     }
     
     public LTetrimino(XYCoord spawnLocation) {
-        // spawn tetrimino on 4th column of the spawn row and 4th-6th of the row below
         shapeCoords[0] = spawnLocation;
-        shapeCoords[1] = new XYCoord(spawnLocation.getX(), spawnLocation.getY()-(TetrisMainFrame.SINGLE_BLOCK_RADIUS*2));
-        shapeCoords[2] = new XYCoord(shapeCoords[1].getX() + (TetrisMainFrame.SINGLE_BLOCK_RADIUS*2), spawnLocation.getY()+(TetrisMainFrame.SINGLE_BLOCK_RADIUS*2));
-        shapeCoords[3] = new XYCoord(shapeCoords[1].getX() + (TetrisMainFrame.SINGLE_BLOCK_RADIUS*4), spawnLocation.getY()+(TetrisMainFrame.SINGLE_BLOCK_RADIUS*2));
+        shapeCoords[1] = new XYCoord(spawnLocation.getX(), spawnLocation.getY()-(TetrisGameState.SINGLE_BLOCK_RADIUS*2));
+        shapeCoords[2] = new XYCoord(shapeCoords[0].getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2), spawnLocation.getY());
+        shapeCoords[3] = new XYCoord(shapeCoords[0].getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*4), spawnLocation.getY());
         this.color = Color.BLUE;
     }
 

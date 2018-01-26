@@ -17,6 +17,7 @@ import tetris.tetriminos.*;
  * @author leandrogil
  */
 public class TetrisGameState {
+
     // singleton instance of the TetrisGameState
     private static TetrisGameState instance = null;
     
@@ -24,18 +25,15 @@ public class TetrisGameState {
     public static TetrisGameState getInstance() {
         if(instance == null) {
             instance = new TetrisGameState();
-            // populate tetromino bag
-            tetriminoBag.add(new ITetrimino());
-            tetriminoBag.add(new JTetrimino());
-            tetriminoBag.add(new LTetrimino());
-            tetriminoBag.add(new OTetrimino());
-            tetriminoBag.add(new STetrimino());
-            tetriminoBag.add(new TTetrimino());
-            tetriminoBag.add(new ZTetrimino());
-            tetriminosOnField.clear();
+            instance.shuffleTetriminoBag();
         }
         return instance;
     }
+    
+    // some constants
+    public static final int MAX_GRID_HEIGHT = 22;             // default height of the Tetris grid
+    public static final int MAX_GRID_WIDTH = 10;              // default width of the Tetris grid
+    public static final int SINGLE_BLOCK_RADIUS = 8;          // in pixels
     
     // list containing the generated tetriminos, in proper sequence
     private static ArrayList<Tetrimino> tetriminoBag = new ArrayList<>();
@@ -52,10 +50,19 @@ public class TetrisGameState {
     public ArrayList<Tetrimino> getTetriminosOnField() { return tetriminosOnField; }
     public ArrayList<Tetrimino> getTetriminoBag() { return tetriminoBag;}
     
-    public void setCurrentTetrimino(Tetrimino t) { fallingTetrimino = t; }
+    public void setFallingTetrimino(Tetrimino t) { fallingTetrimino = t; }
     public void addTetriminoToField(Tetrimino t) { tetriminosOnField.add(t);}
     
     public void shuffleTetriminoBag() {
+        tetriminoBag.clear();
+        // populate tetromino bag
+        tetriminoBag.add(new ITetrimino());
+        tetriminoBag.add(new JTetrimino());
+        tetriminoBag.add(new LTetrimino());
+        tetriminoBag.add(new OTetrimino());
+        tetriminoBag.add(new STetrimino());
+        tetriminoBag.add(new TTetrimino());
+        tetriminoBag.add(new ZTetrimino());
         Collections.shuffle(tetriminoBag);
     }
     

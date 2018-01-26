@@ -5,29 +5,20 @@
  */
 package tetris.gui;
 
-import tetris.tetriminos.*;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import tetris.utils.TetrisGameState;
 
 /**
  *
  * @author leandrogil
  */
 public class TetrisMainFrame extends javax.swing.JFrame {
-    
-    // some constants
-    public static final int MAX_GRID_HEIGHT = 22;             // default height of the Tetris grid
-    public static final int MAX_GRID_WIDTH = 10;              // default width of the Tetris grid
-    public static final int SINGLE_BLOCK_RADIUS = 8;          // in pixels
 
-    private GameLoopThread gameLoopThread;                    // reference to game loop thread
+    private GameLoopWorker gameLoopWorker;                    // reference to game loop thread
             
     public TetrisMainFrame() {
         initComponents();
-        
+        tetrisPanel.requestFocus();
         // set preferred size
         //setPreferredSize(new Dimension(SINGLE_BLOCK_RADIUS*2*MAX_GRID_WIDTH, SINGLE_BLOCK_RADIUS*2*MAX_GRID_HEIGHT));
         //setMinimumSize(getPreferredSize());
@@ -52,13 +43,9 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         setTitle("Tetris");
         setMinimumSize(new java.awt.Dimension(277, 506));
         setName("mainFrame"); // NOI18N
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                mainFrameKeyTyped(evt);
-            }
-        });
 
         btnEndGame.setText("End game");
+        btnEndGame.setEnabled(false);
         btnEndGame.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEndGameActionPerformed(evt);
@@ -77,10 +64,11 @@ public class TetrisMainFrame extends javax.swing.JFrame {
 
         tetrisPanel.setBackground(new java.awt.Color(255, 255, 255));
         tetrisPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        tetrisPanel.setMaximumSize(new Dimension(SINGLE_BLOCK_RADIUS*2*MAX_GRID_WIDTH, SINGLE_BLOCK_RADIUS*2*MAX_GRID_HEIGHT));
-        tetrisPanel.setMinimumSize(new Dimension(SINGLE_BLOCK_RADIUS*2*MAX_GRID_WIDTH, SINGLE_BLOCK_RADIUS*2*MAX_GRID_HEIGHT));
-        tetrisPanel.setName("tetrisPanel"); // NOI18N
-        tetrisPanel.setPreferredSize(new Dimension(SINGLE_BLOCK_RADIUS*2*MAX_GRID_WIDTH, SINGLE_BLOCK_RADIUS*2*MAX_GRID_HEIGHT));
+        tetrisPanel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tetrisPanelKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout tetrisPanelLayout = new javax.swing.GroupLayout(tetrisPanel);
         tetrisPanel.setLayout(tetrisPanelLayout);
@@ -90,7 +78,7 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         );
         tetrisPanelLayout.setVerticalGroup(
             tetrisPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 336, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -100,20 +88,20 @@ public class TetrisMainFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tetrisPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                    .addComponent(tetrisPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblStatus)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnStartGame)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                         .addComponent(btnEndGame)))
                 .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(27, 27, 27)
                 .addComponent(tetrisPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStartGame)
                     .addComponent(btnEndGame))
@@ -126,33 +114,49 @@ public class TetrisMainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEndGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndGameActionPerformed
-        // TODO add your handling code here:
+        // set loop flag in game loop worker instance to false
+        gameLoopWorker.setGameIsRunningFlag();
+        btnStartGame.setEnabled(true);
+        btnEndGame.setEnabled(false);
     }//GEN-LAST:event_btnEndGameActionPerformed
 
     private void btnStartGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartGameActionPerformed
         // instantiate game loop thread to start the game
-        GameLoopThread gmt = new GameLoopThread(this);
-        gmt.start();
+        gameLoopWorker = new GameLoopWorker(this);
+        gameLoopWorker.execute();
+        btnStartGame.setEnabled(false);
+        btnEndGame.setEnabled(true);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
-    private void mainFrameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mainFrameKeyTyped
-        // TODO add your handling code here:
+    private void tetrisPanelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tetrisPanelKeyTyped
+        System.out.println("tetrisPanelKeyTyped triggered");
         switch(evt.getKeyCode()) {
-            case java.awt.event.KeyEvent.VK_UP:
+            //case java.awt.event.KeyEvent.VK_UP:
                 // TODO: turn current shape to the left
-                break;
+                //break;
             case java.awt.event.KeyEvent.VK_LEFT:
-                // TODO: move current shape to the left
+                // move current shape to the left
+                System.out.println("triggered VK_LEFT");
+                synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
+                    TetrisGameState.getInstance().getFallingTetrimino().moveToLeft();
+                }
+                revalidate();
+                repaint();
                 break;
             case java.awt.event.KeyEvent.VK_RIGHT:
-                // TODO: turn current shape to the right
-                break;
-            case java.awt.event.KeyEvent.VK_DOWN:
+                // turn current shape to the right
+                System.out.println("triggered VK_RIGHT");
+                synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
+                    TetrisGameState.getInstance().getFallingTetrimino().moveToRight();
+                }
+                revalidate();
+                repaint();
+            break;
+            //case java.awt.event.KeyEvent.VK_DOWN:
                 // TODO: accelerate shape downward
-                break;
+            //break;
         }
-        
-    }//GEN-LAST:event_mainFrameKeyTyped
+    }//GEN-LAST:event_tetrisPanelKeyTyped
 
     /**
      * @param args the command line arguments
@@ -202,10 +206,5 @@ public class TetrisMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblStatus;
     private tetris.gui.TetrisPanel tetrisPanel;
     // End of variables declaration//GEN-END:variables
-
-    //public JPanel getTetrisPanelInstance() { return tetrisPanel; }
-    
-    
-    public TetrisPanel getTetrisPanelInstance() { return tetrisPanel; }
-    
+        
 }

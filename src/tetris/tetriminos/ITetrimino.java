@@ -9,7 +9,7 @@ import java.awt.Color;
 import tetris.utils.Orientation;
 import java.awt.Graphics;
 import tetris.utils.XYCoord;
-import tetris.gui.TetrisMainFrame;
+import tetris.utils.TetrisGameState;
 
 /**
  *
@@ -19,14 +19,14 @@ public class ITetrimino extends Tetrimino {
 
     public ITetrimino() {
         // spawn tetrimino on the 22nd row, across the 4th and 7th columns by default
-        this(new XYCoord(TetrisMainFrame.SINGLE_BLOCK_RADIUS*7, TetrisMainFrame.SINGLE_BLOCK_RADIUS));
+        this(new XYCoord(TetrisGameState.SINGLE_BLOCK_RADIUS*7, TetrisGameState.SINGLE_BLOCK_RADIUS));
     }
     
     public ITetrimino(XYCoord spawnLocation) {
         shapeCoords[0] = new XYCoord(spawnLocation.getX(), spawnLocation.getY());
-        shapeCoords[1] = new XYCoord(shapeCoords[0].getX() + (TetrisMainFrame.SINGLE_BLOCK_RADIUS*2), shapeCoords[0].getY());
-        shapeCoords[2] = new XYCoord(shapeCoords[1].getX() + (TetrisMainFrame.SINGLE_BLOCK_RADIUS*2), shapeCoords[0].getY());
-        shapeCoords[3] = new XYCoord(shapeCoords[2].getX() + (TetrisMainFrame.SINGLE_BLOCK_RADIUS*2), shapeCoords[0].getY());
+        shapeCoords[1] = new XYCoord(shapeCoords[0].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2), shapeCoords[0].getY());
+        shapeCoords[2] = new XYCoord(shapeCoords[1].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2), shapeCoords[0].getY());
+        shapeCoords[3] = new XYCoord(shapeCoords[2].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2), shapeCoords[0].getY());
         this.color = Color.CYAN;
     }
 
@@ -37,7 +37,7 @@ public class ITetrimino extends Tetrimino {
     
     @Override
     public String toString() {
-        return "I-Tetrimino[" + shapeCoords[0].getX() + "," + shapeCoords[0].getY() + "]";
+        return "I-Tetrimino" + shapeCoords[0];
     }
     
 }
