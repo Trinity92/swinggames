@@ -32,8 +32,17 @@ public class ZTetrimino extends Tetrimino {
     }
 
     @Override
-    public void changeOrientation(Orientation orientation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void rotateLeft() {
+        orientation = orientation.getNextLeftRotation();
+        
+        // TODO: update tetrimino coordinates after left-rotation
+    }
+    
+    @Override
+    public void rotateRight() {
+        orientation = orientation.getNextRightRotation();
+        
+        // TODO: update tetrimino coordinates after right-rotation
     }
     
     @Override

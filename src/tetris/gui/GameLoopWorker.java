@@ -31,30 +31,31 @@ public class GameLoopWorker extends SwingWorker<Boolean, Void> {
 
     @Override
     protected Boolean doInBackground() throws Exception {
+        long timeRef = System.currentTimeMillis();
         int tetriminoCount = 0;
         while(gameIsRunning) {
-            // shuffle tetrimino bag if all tetrimino types has spawned already
+            // shuffle tetrimino bag if all tetrimino types have spawned already
             if(tetriminoCount == 7) {
                 TetrisGameState.getInstance().shuffleTetriminoBag();
                 tetriminoCount = 0;
             }
-            tetrisMainFrame.revalidate();
-            tetrisMainFrame.repaint();
             
-            // make Tetriminos move downward at a fix interval
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(GameLoopWorker.class.getName()).log(Level.SEVERE, null, ex);
+            // make Tetriminos move downward at a fixed interval of 1 second
+            if(System.currentTimeMillis() - timeRef > 1000) {
+                synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
+                    TetrisGameState.getInstance().getFallingTetrimino().moveShapeDown();
+                }
+                timeRef = System.currentTimeMillis() + (System.currentTimeMillis()-timeRef-1000);
+                tetrisMainFrame.revalidate();
+                tetrisMainFrame.repaint();
             }
             
+            // spawn next tetrimino in bag if current one has been placed already
             if(TetrisGameState.getInstance().getFallingTetrimino() == null) {
                 TetrisGameState.getInstance().spawnNextTetrimino();
+                tetriminoCount++;
             }
-            synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                TetrisGameState.getInstance().getFallingTetrimino().moveShapeDown();
-            }
-            tetriminoCount++;
+                  
         }
         return gameOver;
     }

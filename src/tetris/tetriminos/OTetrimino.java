@@ -32,8 +32,13 @@ public class OTetrimino extends Tetrimino {
     }
 
     @Override
-    public void changeOrientation(Orientation orientation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void rotateLeft() {
+        orientation = orientation.getNextLeftRotation();
+    }
+    
+    @Override
+    public void rotateRight() {
+        orientation = orientation.getNextRightRotation();
     }
     
     @Override

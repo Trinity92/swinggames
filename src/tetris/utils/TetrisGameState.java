@@ -30,10 +30,17 @@ public class TetrisGameState {
         return instance;
     }
     
-    // some constants
+    // you may change these variables to your liking
+    public static final int TETRIMINO_BORDER_SIZE = 2;        // in pixels
+    public static final int TETRIS_PANE_BORDER_WIDTH = 4;     // in pixels
+    public static final int SINGLE_BLOCK_RADIUS = 8;          // in pixels
+
+    // some constants (DO NOT MODIFY!)
     public static final int MAX_GRID_HEIGHT = 22;             // default height of the Tetris grid
     public static final int MAX_GRID_WIDTH = 10;              // default width of the Tetris grid
-    public static final int SINGLE_BLOCK_RADIUS = 8;          // in pixels
+    public static final int TETRIS_PANE_WIDTH = ((MAX_GRID_WIDTH+1)*(TETRIMINO_BORDER_SIZE/2)) + (MAX_GRID_WIDTH*SINGLE_BLOCK_RADIUS*2) + (TETRIS_PANE_BORDER_WIDTH*2);
+    public static final int TETRIS_PANE_HEIGHT = ((MAX_GRID_HEIGHT+1)*(TETRIMINO_BORDER_SIZE/2)) + (MAX_GRID_HEIGHT*SINGLE_BLOCK_RADIUS*2) + (TETRIS_PANE_BORDER_WIDTH*2);
+
     
     // list containing the generated tetriminos, in proper sequence
     private static ArrayList<Tetrimino> tetriminoBag = new ArrayList<>();

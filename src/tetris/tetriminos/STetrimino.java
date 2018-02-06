@@ -6,8 +6,6 @@
 package tetris.tetriminos;
 
 import java.awt.Color;
-import tetris.utils.Orientation;
-import java.awt.Graphics;
 import tetris.utils.XYCoord;
 import tetris.utils.TetrisGameState;
 
@@ -32,8 +30,64 @@ public class STetrimino extends Tetrimino {
     }
 
     @Override
-    public void changeOrientation(Orientation orientation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void rotateLeft() {
+        orientation = orientation.getNextLeftRotation();
+        
+        // update tetrimino coordinates after left-rotation
+        // (coordinates are ordered like so: first the two middle blocks, then from top to bottom/left to right depending on orientation)
+        switch(orientation) {
+            case WEST:
+                shapeCoords[1] = shapeCoords[2];
+                shapeCoords[2] = new XYCoord(shapeCoords[1].getX(), shapeCoords[1].getY() - TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                shapeCoords[3] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() + TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                break;
+            case EAST:
+                shapeCoords[1] = shapeCoords[3];
+                shapeCoords[2] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() - TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                shapeCoords[3] = new XYCoord(shapeCoords[1].getX(), shapeCoords[1].getY() + TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                break;
+            case NORTH:
+                shapeCoords[2] = shapeCoords[1];
+                shapeCoords[1] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() + TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                shapeCoords[3] = new XYCoord(shapeCoords[1].getX() + TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[1].getY() - TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                break;
+            case SOUTH:
+                shapeCoords[1] = shapeCoords[3];
+                shapeCoords[2] = new XYCoord(shapeCoords[1].getX() - TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[1].getY());
+                shapeCoords[3] = new XYCoord(shapeCoords[0].getX() + TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[0].getY());
+                break;
+        }
+    }
+    
+    @Override
+    public void rotateRight() {
+        orientation = orientation.getNextRightRotation();
+        
+        // update tetrimino coordinates after right-rotation
+        // (coordinates are ordered like so: first the two middle blocks, then from top to bottom/left to right depending on orientation)
+        switch(orientation) {
+            case WEST:
+                shapeCoords[3] = shapeCoords[1];
+                shapeCoords[1] = new XYCoord(shapeCoords[0].getX() - TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[0].getY());
+                shapeCoords[2] = new XYCoord(shapeCoords[1].getX(), shapeCoords[1].getY() - TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                break;
+            case EAST:
+                shapeCoords[2] = shapeCoords[1];
+                shapeCoords[1] = new XYCoord(shapeCoords[0].getX() + TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[0].getY());
+                shapeCoords[3] = new XYCoord(shapeCoords[1].getX(), shapeCoords[1].getY() + TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                break;
+            case NORTH:
+                shapeCoords[2] = shapeCoords[1];
+                shapeCoords[1] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() - TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                shapeCoords[3] = new XYCoord(shapeCoords[1].getX() + TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[1].getY());
+                break;
+            case SOUTH:
+                shapeCoords[3] = shapeCoords[1];
+                shapeCoords[1] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() + TetrisGameState.SINGLE_BLOCK_RADIUS*2);
+                shapeCoords[1] = new XYCoord(shapeCoords[1].getX() - TetrisGameState.SINGLE_BLOCK_RADIUS*2, shapeCoords[1].getY());
+                break;
+        }
+
     }
     
     @Override
