@@ -6,8 +6,6 @@
 package tetris.tetriminos;
 
 import java.awt.Color;
-import tetris.utils.Orientation;
-import java.awt.Graphics;
 import tetris.utils.XYCoord;
 import tetris.utils.TetrisGameState;
 
@@ -19,15 +17,15 @@ public class OTetrimino extends Tetrimino {
 
     public OTetrimino() {
         // spawn tetrimino on 5th-6th column of the spawn row and 4th-5th of the row below
-        this(new XYCoord(TetrisGameState.SINGLE_BLOCK_RADIUS*8, 0));
+        this(new XYCoord(TetrisGameState.TETRIS_PANE_BORDER_WIDTH + (TetrisGameState.SINGLE_BLOCK_RADIUS*9) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2*5), TetrisGameState.TETRIS_PANE_BORDER_WIDTH + (TetrisGameState.TETRIMINO_BORDER_SIZE/2) + TetrisGameState.SINGLE_BLOCK_RADIUS));
     }
     
     public OTetrimino(XYCoord spawnLocation) {
         // spawn tetrimino on 5th-6th column of the spawn row and 4th-5th of the row below
         shapeCoords[0] = spawnLocation;
-        shapeCoords[1] = new XYCoord(spawnLocation.getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2), spawnLocation.getY());
-        shapeCoords[2] = new XYCoord(spawnLocation.getX(), spawnLocation.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2));
-        shapeCoords[3] = new XYCoord(shapeCoords[2].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2), shapeCoords[2].getY());
+        shapeCoords[1] = new XYCoord(spawnLocation.getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY());
+        shapeCoords[2] = new XYCoord(spawnLocation.getX(), spawnLocation.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+        shapeCoords[3] = new XYCoord(shapeCoords[2].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[2].getY());
         this.color = Color.YELLOW;
     }
 
@@ -39,11 +37,6 @@ public class OTetrimino extends Tetrimino {
     @Override
     public void rotateRight() {
         orientation = orientation.getNextRightRotation();
-    }
-    
-    @Override
-    public String toString() {
-        return "O-Tetrimino[" + shapeCoords[0].getX() + "," + shapeCoords[0].getY() + "]";
     }
     
 }

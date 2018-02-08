@@ -20,7 +20,6 @@ public class ITetrimino extends Tetrimino {
     }
     
     public ITetrimino(XYCoord spawnLocation) {
-        // TODO: correct this, match it with its expected default orientation on spawn (check Tetris guideline for this)
         // NOTE: Java Swing borders of components are drawn in the inside (meaning: the thickness of borders will grow towards the inside only if you increase the thickness)
         shapeCoords[0] = new XYCoord(spawnLocation.getX(), spawnLocation.getY());
         shapeCoords[1] = new XYCoord(shapeCoords[0].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[0].getY());
@@ -88,11 +87,6 @@ public class ITetrimino extends Tetrimino {
                 shapeCoords[3] = new XYCoord(shapeCoords[2].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[2].getY());
                 break;
         }
-    }
-    
-    @Override
-    public String toString() {
-        return "I-Tetrimino" + shapeCoords[0];
     }
     
 }

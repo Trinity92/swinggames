@@ -12,6 +12,7 @@ import tetris.utils.TetrisGameState;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.Arrays;
 import tetris.utils.XYCoord;
 
 /**
@@ -43,62 +44,79 @@ public abstract class Tetrimino {
         ((Graphics2D)g).setStroke(bs);
     }
     
-    // replaces a shape's coordinate with a different one
-    public void updateShapeCoord(XYCoord currentCoord, XYCoord newCoord) {
-        for(XYCoord xyc : shapeCoords) {
-            if(xyc.equals(currentCoord)) xyc = newCoord;
-        }
-    }
-    
     //  function that updates the shape's coordinates to reflect a down-movement on the Tetris field
     public void moveShapeDown() {
-        // check if tetrimino can be moved down without going over the bottom border
-        for(XYCoord xyc : shapeCoords) {
-            if(xyc.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2) > TetrisGameState.TETRIS_PANE_HEIGHT) {
-                return;
-            }
-        }
-        for(XYCoord xyc : shapeCoords) xyc.setY(xyc.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+        if(canBeMovedDown())
+            for(XYCoord xyc : shapeCoords)
+                xyc.setY(xyc.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
     }
     
     // move tetrimino one block to the left
     public void moveToLeft() {
-        // check if tetrimino can be moved to the left without going over the left border
-        for(XYCoord xyc : shapeCoords) {
-            if(xyc.getX()-(TetrisGameState.SINGLE_BLOCK_RADIUS*2)-(TetrisGameState.TETRIMINO_BORDER_SIZE/2) < 0) {
-                return;
-            }
-        }
-        
-        // TODO: check if there is no other tetrimino in the way before moving to the left
-        
-        for(XYCoord xyc : shapeCoords) xyc.setX(xyc.getX()-TetrisGameState.SINGLE_BLOCK_RADIUS*2-(TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+        if(canBeMovedLeft())
+            for(XYCoord xyc : shapeCoords)
+                xyc.setX(xyc.getX()-TetrisGameState.SINGLE_BLOCK_RADIUS*2-(TetrisGameState.TETRIMINO_BORDER_SIZE/2));
     }
         
     // move tetrimino one block to the right
     public void moveToRight() {
-        // check if tetrimino can be moved to the right without going over the right border
-        for(XYCoord xyc : shapeCoords) {
-            if(xyc.getX()+(TetrisGameState.SINGLE_BLOCK_RADIUS*2)+(TetrisGameState.TETRIMINO_BORDER_SIZE/2) > TetrisGameState.TETRIS_PANE_WIDTH) {
-                return;
-            }
-        }
-        
-        // TODO: check if there is no other tetrimino in the way before moving to the right
-        
-        for(XYCoord xyc : shapeCoords) xyc.setX(xyc.getX()+TetrisGameState.SINGLE_BLOCK_RADIUS*2+(TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+        if(canBeMovedRight())
+            for(XYCoord xyc : shapeCoords)
+                xyc.setX(xyc.getX()+TetrisGameState.SINGLE_BLOCK_RADIUS*2+(TetrisGameState.TETRIMINO_BORDER_SIZE/2));
     }
     
     // some method stubs, TODO
     public boolean canBeMovedDown() {
+        for(XYCoord xy1 : shapeCoords) {
+            // check if tetrimino can be moved down without going over the bottom border   
+            if(xy1.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2) > TetrisGameState.TETRIS_PANE_HEIGHT) {
+                return false;
+            }
+            for(Tetrimino t : TetrisGameState.getInstance().getTetriminosOnField()) {            
+                for(XYCoord xy2 : t.getCoordinates()) {
+                    if(xy1.getY()+(TetrisGameState.SINGLE_BLOCK_RADIUS*2)+(TetrisGameState.TETRIMINO_BORDER_SIZE/2) >= xy2.getY() && xy1.getX() == xy2.getX()) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
+    
     public boolean canBeMovedLeft() {
+        for(XYCoord xy1 : shapeCoords) {
+            // check if tetrimino can be moved down without going over the bottom border   
+            if(xy1.getX()-(TetrisGameState.SINGLE_BLOCK_RADIUS*2)-(TetrisGameState.TETRIMINO_BORDER_SIZE/2) < 0) {
+                return false;
+            }
+            for(Tetrimino t : TetrisGameState.getInstance().getTetriminosOnField()) {
+                for(XYCoord xy2 : t.getCoordinates()) {
+                    if(xy1.getX()-(TetrisGameState.SINGLE_BLOCK_RADIUS*2)-(TetrisGameState.TETRIMINO_BORDER_SIZE/2) == xy2.getX() && xy1.getY() == xy2.getY()) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
+    
     public boolean canBeMovedRight() {
+        for(XYCoord xy1 : shapeCoords) {
+            // check if tetrimino can be moved down without going over the right border   
+            if(xy1.getX()+(TetrisGameState.SINGLE_BLOCK_RADIUS*2)+(TetrisGameState.TETRIMINO_BORDER_SIZE/2) > TetrisGameState.TETRIS_PANE_WIDTH) {
+                return false;
+            }
+            for(Tetrimino t : TetrisGameState.getInstance().getTetriminosOnField()) {       
+                for(XYCoord xy2 : t.getCoordinates()) {
+                    if(xy1.getX()+(TetrisGameState.SINGLE_BLOCK_RADIUS*2)+(TetrisGameState.TETRIMINO_BORDER_SIZE/2) == xy2.getX() && xy1.getY() == xy2.getY()) {
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
+    
     public boolean canBeRotatedLeft() {
         return true;
     }
@@ -110,4 +128,11 @@ public abstract class Tetrimino {
     public abstract void rotateLeft();
     // rotate tetrimino to the right
     public abstract void rotateRight();
+    
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName()+ "[" + shapeCoords[0].getX() + "," + shapeCoords[0].getY() + "]";
+    }
+    
+    public XYCoord[] getCoordinates() { return shapeCoords; }
 }

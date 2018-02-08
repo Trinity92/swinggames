@@ -31,7 +31,7 @@ public class TetrisGameState {
     }
     
     // you may change these variables to your liking
-    public static final int TETRIMINO_BORDER_SIZE = 2;        // in pixels
+    public static final int TETRIMINO_BORDER_SIZE = 2;        // in pixels (NOTE: avoid unpair numbers if possible)
     public static final int TETRIS_PANE_BORDER_WIDTH = 4;     // in pixels
     public static final int SINGLE_BLOCK_RADIUS = 8;          // in pixels
 
@@ -73,9 +73,19 @@ public class TetrisGameState {
         Collections.shuffle(tetriminoBag);
     }
     
-    public void spawnNextTetrimino() {
+    public void resetGameState() {
+        tetriminosOnField.clear();
+        currentTetriminoBagIndex = 0;
+        shuffleTetriminoBag();
         fallingTetrimino = tetriminoBag.get(currentTetriminoBagIndex);
-        currentTetriminoBagIndex = (++currentTetriminoBagIndex) % 7;
+    }
+    
+    public void spawnNextTetrimino() {
+        tetriminosOnField.add(fallingTetrimino);
+        fallingTetrimino = tetriminoBag.get(currentTetriminoBagIndex);
+        currentTetriminoBagIndex = (currentTetriminoBagIndex+1) % 7;
+        if(currentTetriminoBagIndex == 0)
+            shuffleTetriminoBag();
         Logger.getLogger(TetrisMainFrame.class.getName()).log(Level.INFO, "Spawned new {0}", fallingTetrimino);
     }
     

@@ -31,7 +31,7 @@ public class XYCoord {
     
     @Override
     public String toString() {
-        return "[" + this.x + "," + this.y + "]";
+        return "[" + this.x + "," + this.y + "]" + "@" + Integer.toString(hashCode(), 16);
     }
     
 }

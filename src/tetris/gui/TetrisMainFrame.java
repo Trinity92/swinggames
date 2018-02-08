@@ -135,7 +135,7 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         gameLoopWorker.execute();
         btnStartGame.setEnabled(false);
         btnEndGame.setEnabled(true);
-        System.out.println(tetrisPanel.getPreferredSize() + " <> " + tetrisPanel.getSize() + " <> " + TetrisGameState.TETRIS_PANE_WIDTH + "x" + TetrisGameState.TETRIS_PANE_HEIGHT);
+        //System.out.println(tetrisPanel.getPreferredSize() + " <> " + tetrisPanel.getSize() + " <> " + TetrisGameState.TETRIS_PANE_WIDTH + "x" + TetrisGameState.TETRIS_PANE_HEIGHT);
     }//GEN-LAST:event_btnStartGameActionPerformed
 
     private void tetrisPanelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tetrisPanelKeyTyped
