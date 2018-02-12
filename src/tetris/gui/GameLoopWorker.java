@@ -31,25 +31,35 @@ public class GameLoopWorker extends SwingWorker<Boolean, Void> {
 
     @Override
     protected Boolean doInBackground() throws Exception {
-        long timeRef = System.currentTimeMillis();
-        TetrisGameState.getInstance().resetGameState();
-        while(gameIsRunning) {
-            // make Tetriminos move downward at a fixed interval of 1 second
-            if(System.currentTimeMillis() - timeRef > 1000) {
-                synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                    // spawn next tetrimino in bag if current one has been placed already
-                    if(!TetrisGameState.getInstance().getFallingTetrimino().canBeMovedDown()) {
-                        TetrisGameState.getInstance().spawnNextTetrimino();
+        try {
+            long timeRef = System.currentTimeMillis();
+            TetrisGameState.getInstance().resetGameState();
+            while(gameIsRunning) {
+                // make Tetriminos move downward at a fixed interval of 1 second
+                if(System.currentTimeMillis() - timeRef > 1000) {
+
+                    synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
+                        // spawn next tetrimino in bag if current one has been placed already
+                        if(!TetrisGameState.getInstance().getFallingTetrimino().canBeMovedDown()) {
+                            // check if any rows can be cleared
+                            TetrisGameState.getInstance().spawnNextTetrimino();
+                            if(TetrisGameState.getInstance().getTetriminosOnField().size() > 2)
+                                TetrisGameState.getInstance().clearRows();
+                        }
                     }
-                }
-                synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                    TetrisGameState.getInstance().getFallingTetrimino().moveShapeDown();
-                }
-                
-                timeRef = System.currentTimeMillis() + (System.currentTimeMillis()-timeRef-1000);
-                tetrisMainFrame.revalidate();
-                tetrisMainFrame.repaint();
-            }       
+                    synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
+                        TetrisGameState.getInstance().getFallingTetrimino().moveShapeDown();
+                    }
+
+                    timeRef = System.currentTimeMillis() + (System.currentTimeMillis()-timeRef-1000);
+                    tetrisMainFrame.revalidate();
+                    tetrisMainFrame.repaint();
+                }       
+            }
+        } catch (Exception e) {
+            System.err.println("Caught exception in GameLoopWorker thread!");
+            e.printStackTrace();
+            throw e;
         }
         return gameOver;
     }

@@ -12,6 +12,7 @@ import tetris.utils.TetrisGameState;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.ArrayList;
 import java.util.Arrays;
 import tetris.utils.XYCoord;
 
@@ -21,7 +22,7 @@ import tetris.utils.XYCoord;
  */
 public abstract class Tetrimino {
     
-    protected XYCoord[] shapeCoords = new XYCoord[4];       // coordinates of the blocks that make up the complete shape
+    protected ArrayList<XYCoord> shapeCoords = new ArrayList<>();       // coordinates of the blocks that make up the complete shape
     protected Orientation orientation = Orientation.NORTH;   // current orientation of the shape (left, right, ...)
     protected Color color;
     
@@ -131,8 +132,21 @@ public abstract class Tetrimino {
     
     @Override
     public String toString() {
-        return this.getClass().getSimpleName()+ "[" + shapeCoords[0].getX() + "," + shapeCoords[0].getY() + "]";
+        return this.getClass().getSimpleName()+ "[" + shapeCoords.get(0).getX() + "," + shapeCoords.get(0).getY() + "]";
     }
     
-    public XYCoord[] getCoordinates() { return shapeCoords; }
+    public ArrayList<XYCoord> getCoordinates() { return shapeCoords; }
+    
+    public void deleteCoordinate(XYCoord xy) {
+        shapeCoords.remove(xy);
+    }
+    
+    public Integer[] getUniqueYCoords() {
+        ArrayList<Integer> uniqueYCoords = new ArrayList<>();
+        for(XYCoord xy : shapeCoords) {
+            if(!uniqueYCoords.contains(xy.getY()))
+                uniqueYCoords.add(xy.getY());
+        }
+        return uniqueYCoords.toArray(new Integer[uniqueYCoords.size()]);
+    }
 }

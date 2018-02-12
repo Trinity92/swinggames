@@ -7,6 +7,8 @@ package tetris.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tetris.gui.TetrisMainFrame;
@@ -82,11 +84,56 @@ public class TetrisGameState {
     
     public void spawnNextTetrimino() {
         tetriminosOnField.add(fallingTetrimino);
-        fallingTetrimino = tetriminoBag.get(currentTetriminoBagIndex);
         currentTetriminoBagIndex = (currentTetriminoBagIndex+1) % 7;
         if(currentTetriminoBagIndex == 0)
             shuffleTetriminoBag();
+        fallingTetrimino = tetriminoBag.get(currentTetriminoBagIndex);
         Logger.getLogger(TetrisMainFrame.class.getName()).log(Level.INFO, "Spawned new {0}", fallingTetrimino);
     }
     
+    public void clearRows() {
+        int blocksToMoveDown=0, lastYCoord=Integer.MAX_VALUE;
+        
+        for(int lastTetriminoUniqueY : tetriminosOnField.get(tetriminosOnField.size()-1).getUniqueYCoords()) {
+            int deletedCoordsCounter=0;
+            for(Iterator tetriminosOnFieldIt = tetriminosOnField.iterator(); tetriminosOnFieldIt.hasNext();) {
+                Tetrimino tetriminoOnField = (Tetrimino)tetriminosOnFieldIt.next();
+                for(Iterator tetriminosOnFieldCoordsIt = tetriminoOnField.getCoordinates().iterator(); tetriminosOnFieldCoordsIt.hasNext();) {
+                    XYCoord tetriminosOnFieldCoord = (XYCoord) tetriminosOnFieldCoordsIt.next();
+                    if(tetriminosOnFieldCoord.getY() == lastTetriminoUniqueY) {
+                        deletedCoordsCounter++;
+                    }
+                }
+            }
+            
+            // check if row of blocks has been found that can be removed
+            if(deletedCoordsCounter == MAX_GRID_WIDTH) {
+                // clear/remove row of blocks
+                for(Iterator tit = tetriminosOnField.iterator(); tit.hasNext();) {
+                    Tetrimino t = (Tetrimino) tit.next();
+                    for(Iterator it = t.getCoordinates().iterator(); it.hasNext();) {             // TODO: check if this is legal?
+                        XYCoord xyc = (XYCoord) it.next();
+                        if(xyc.getY() == lastTetriminoUniqueY) {
+                            it.remove();
+                        }
+                    }
+                    
+                    // remove tetrimino from field if no more coordinates left to remove from it
+                    if(t.getCoordinates().isEmpty())
+                        tit.remove();
+                }
+                lastYCoord = (lastTetriminoUniqueY > lastYCoord ? lastTetriminoUniqueY : lastYCoord);
+                blocksToMoveDown += (SINGLE_BLOCK_RADIUS*2) + (TETRIMINO_BORDER_SIZE/2);
+            } 
+        }
+        
+        // move rows down (placeholder)
+        for(Tetrimino t : tetriminosOnField) {
+            for(XYCoord xy : t.getCoordinates()) {
+                if(xy.getY() < lastYCoord) {
+                    xy.setY(xy.getY() + blocksToMoveDown);
+                }
+            }
+        }
+    }
 }

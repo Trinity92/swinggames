@@ -21,10 +21,10 @@ public class TTetrimino extends Tetrimino {
     }
     
     public TTetrimino(XYCoord spawnLocation) {
-        shapeCoords[0] = spawnLocation;
-        shapeCoords[1] = new XYCoord(spawnLocation.getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY());
-        shapeCoords[2] = new XYCoord(spawnLocation.getX(), spawnLocation.getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
-        shapeCoords[3] = new XYCoord(spawnLocation.getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY());
+        shapeCoords.add(spawnLocation);
+        shapeCoords.add(new XYCoord(spawnLocation.getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY()));
+        shapeCoords.add(new XYCoord(spawnLocation.getX(), spawnLocation.getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2)));
+        shapeCoords.add(new XYCoord(spawnLocation.getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY()));
         this.color = Color.PINK;
     }
 
@@ -36,26 +36,26 @@ public class TTetrimino extends Tetrimino {
         // (coordinates are ordered like so: first is always middle block, then top to bottom or left to right depending on orientation)
         switch(orientation) {
             case WEST:
-                XYCoord tempCoordW = shapeCoords[1];
-                shapeCoords[1] = shapeCoords[2];
-                shapeCoords[2] = tempCoordW;
-                shapeCoords[3] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+                XYCoord tempCoordW = shapeCoords.get(1);
+                shapeCoords.set(1, shapeCoords.get(2));
+                shapeCoords.set(2, tempCoordW);
+                shapeCoords.set(3, new XYCoord(shapeCoords.get(0).getX(), shapeCoords.get(0).getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2)));
                 break;
             case EAST:
-                XYCoord tempCoordE = shapeCoords[3];
-                shapeCoords[3] = shapeCoords[2];
-                shapeCoords[2] = tempCoordE;
-                shapeCoords[1] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+                XYCoord tempCoordE = shapeCoords.get(3);
+                shapeCoords.set(3, shapeCoords.get(2));
+                shapeCoords.set(2, tempCoordE);
+                shapeCoords.set(1, new XYCoord(shapeCoords.get(0).getX(), shapeCoords.get(0).getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2)));
                 break;
             case NORTH:
-                shapeCoords[3] = shapeCoords[2];
-                shapeCoords[2] = shapeCoords[1];
-                shapeCoords[1] = new XYCoord(shapeCoords[0].getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[0].getY());
+                shapeCoords.set(3, shapeCoords.get(2));
+                shapeCoords.set(2, shapeCoords.get(1));
+                shapeCoords.set(1, new XYCoord(shapeCoords.get(0).getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords.get(0).getY()));
                 break;
             case SOUTH:
-                shapeCoords[1] = shapeCoords[2];
-                shapeCoords[2] = shapeCoords[3];
-                shapeCoords[3] = new XYCoord(shapeCoords[0].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[0].getY());
+                shapeCoords.set(1, shapeCoords.get(2));
+                shapeCoords.set(2, shapeCoords.get(3));
+                shapeCoords.set(3, new XYCoord(shapeCoords.get(0).getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords.get(0).getY()));
                 break;
         }
     }
@@ -68,26 +68,26 @@ public class TTetrimino extends Tetrimino {
         // (coordinates are ordered like so: first is always middle block, then top to bottom or left to right depending on orientation)
         switch(orientation) {
             case WEST:
-                shapeCoords[3] = shapeCoords[2];
-                shapeCoords[2] = shapeCoords[1];
-                shapeCoords[1] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+                shapeCoords.set(3, shapeCoords.get(2));
+                shapeCoords.set(2, shapeCoords.get(1));
+                shapeCoords.set(1, new XYCoord(shapeCoords.get(0).getX(), shapeCoords.get(0).getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2)));
                 break;
             case EAST:
-                shapeCoords[1] = shapeCoords[2];
-                shapeCoords[2] = shapeCoords[3];
-                shapeCoords[3] = new XYCoord(shapeCoords[0].getX(), shapeCoords[0].getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
+                shapeCoords.set(1, shapeCoords.get(2));
+                shapeCoords.set(2, shapeCoords.get(3));
+                shapeCoords.set(3, new XYCoord(shapeCoords.get(0).getX(), shapeCoords.get(0).getY() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2)));
                 break;
             case NORTH:
-                XYCoord tempCoordN = shapeCoords[1];
-                shapeCoords[1] = shapeCoords[2];
-                shapeCoords[2] = tempCoordN;
-                shapeCoords[3] = new XYCoord(shapeCoords[0].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[0].getY());
+                XYCoord tempCoordN = shapeCoords.get(1);
+                shapeCoords.set(1, shapeCoords.get(2));
+                shapeCoords.set(2, tempCoordN);
+                shapeCoords.set(3, new XYCoord(shapeCoords.get(0).getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords.get(0).getY()));
                 break;
             case SOUTH:
-                XYCoord tempCoordS = shapeCoords[2];
-                shapeCoords[2] = shapeCoords[3];
-                shapeCoords[3] = tempCoordS;
-                shapeCoords[1] = new XYCoord(shapeCoords[0].getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[0].getY());
+                XYCoord tempCoordS = shapeCoords.get(2);
+                shapeCoords.set(2, shapeCoords.get(3));
+                shapeCoords.set(3, tempCoordS);
+                shapeCoords.set(1, new XYCoord(shapeCoords.get(0).getX() - (TetrisGameState.SINGLE_BLOCK_RADIUS*2) - (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords.get(0).getY()));
                 break;
         }
     }

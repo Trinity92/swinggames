@@ -22,10 +22,10 @@ public class OTetrimino extends Tetrimino {
     
     public OTetrimino(XYCoord spawnLocation) {
         // spawn tetrimino on 5th-6th column of the spawn row and 4th-5th of the row below
-        shapeCoords[0] = spawnLocation;
-        shapeCoords[1] = new XYCoord(spawnLocation.getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY());
-        shapeCoords[2] = new XYCoord(spawnLocation.getX(), spawnLocation.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2));
-        shapeCoords[3] = new XYCoord(shapeCoords[2].getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords[2].getY());
+        shapeCoords.add(spawnLocation);
+        shapeCoords.add(new XYCoord(spawnLocation.getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), spawnLocation.getY()));
+        shapeCoords.add(new XYCoord(spawnLocation.getX(), spawnLocation.getY() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2)));
+        shapeCoords.add(new XYCoord(shapeCoords.get(2).getX() + (TetrisGameState.SINGLE_BLOCK_RADIUS*2) + (TetrisGameState.TETRIMINO_BORDER_SIZE/2), shapeCoords.get(2).getY()));
         this.color = Color.YELLOW;
     }
 
