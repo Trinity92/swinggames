@@ -6,8 +6,10 @@
 package tetris.gui;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import tetris.utils.TetrisGameState;
 
 /**
@@ -41,11 +43,12 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         btnStartGame = new javax.swing.JButton();
         tetrisPanel = new tetris.gui.TetrisPanel();
         lblStatus = new javax.swing.JLabel();
+        nextTetriminoPanel = new javax.swing.JPanel();
+        lblScore = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tetris");
-        setMaximumSize(new java.awt.Dimension(277, 506));
-        setMinimumSize(new java.awt.Dimension(277, 506));
+        setMinimumSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
         setName("mainFrame"); // NOI18N
         setResizable(false);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -60,7 +63,8 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         getContentPane().add(btnEndGame, gridBagConstraints);
 
         btnStartGame.setText("Start game");
@@ -72,13 +76,14 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         getContentPane().add(btnStartGame, gridBagConstraints);
 
         tetrisPanel.setBackground(new java.awt.Color(255, 255, 255));
         tetrisPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        tetrisPanel.setMaximumSize(new Dimension(TetrisGameState.SINGLE_BLOCK_RADIUS*2*TetrisGameState.MAX_GRID_WIDTH, TetrisGameState.SINGLE_BLOCK_RADIUS*2*TetrisGameState.MAX_GRID_HEIGHT));
-        tetrisPanel.setMinimumSize(new Dimension(TetrisGameState.SINGLE_BLOCK_RADIUS*2*TetrisGameState.MAX_GRID_WIDTH, TetrisGameState.SINGLE_BLOCK_RADIUS*2*TetrisGameState.MAX_GRID_HEIGHT));
+        tetrisPanel.setMaximumSize(new Dimension(TetrisGameState.TETRIS_PANE_WIDTH, TetrisGameState.TETRIS_PANE_HEIGHT));
+        tetrisPanel.setMinimumSize(new Dimension(TetrisGameState.TETRIS_PANE_WIDTH, TetrisGameState.TETRIS_PANE_HEIGHT));
         tetrisPanel.setPreferredSize(new Dimension(TetrisGameState.TETRIS_PANE_WIDTH, TetrisGameState.TETRIS_PANE_HEIGHT));
         tetrisPanel.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -94,13 +99,13 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         );
         tetrisPanelLayout.setVerticalGroup(
             tetrisPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
         getContentPane().add(tetrisPanel, gridBagConstraints);
 
         lblStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -108,9 +113,48 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         lblStatus.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         getContentPane().add(lblStatus, gridBagConstraints);
+
+        nextTetriminoPanel.setBackground(new java.awt.Color(255, 255, 255));
+        nextTetriminoPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        nextTetriminoPanel.setFocusable(false);
+        nextTetriminoPanel.setMaximumSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
+        nextTetriminoPanel.setMinimumSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
+        nextTetriminoPanel.setPreferredSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
+        nextTetriminoPanel.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout nextTetriminoPanelLayout = new javax.swing.GroupLayout(nextTetriminoPanel);
+        nextTetriminoPanel.setLayout(nextTetriminoPanelLayout);
+        nextTetriminoPanelLayout.setHorizontalGroup(
+            nextTetriminoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        nextTetriminoPanelLayout.setVerticalGroup(
+            nextTetriminoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        getContentPane().add(nextTetriminoPanel, gridBagConstraints);
+
+        lblScore.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblScore.setText("<html>Score: 0<br \\><br \\><br \\>Next:");
+        lblScore.setFocusable(false);
+        lblScore.setMaximumSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION-2, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION-2));
+        lblScore.setPreferredSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION-2, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION-2));
+        lblScore.setRequestFocusEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        getContentPane().add(lblScore, gridBagConstraints);
+        lblScore.getAccessibleContext().setAccessibleName("lblScore");
+        lblScore.getAccessibleContext().setAccessibleParent(this);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -187,8 +231,11 @@ public class TetrisMainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEndGame;
     private javax.swing.JButton btnStartGame;
+    private javax.swing.JLabel lblScore;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JPanel nextTetriminoPanel;
     private tetris.gui.TetrisPanel tetrisPanel;
     // End of variables declaration//GEN-END:variables
         
+    public JLabel getScoreLabel() { return lblScore; }
 }

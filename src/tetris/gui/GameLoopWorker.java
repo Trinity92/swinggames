@@ -43,8 +43,11 @@ public class GameLoopWorker extends SwingWorker<Boolean, Void> {
                         if(!TetrisGameState.getInstance().getFallingTetrimino().canBeMovedDown()) {
                             // check if any rows can be cleared
                             TetrisGameState.getInstance().spawnNextTetrimino();
-                            if(TetrisGameState.getInstance().getTetriminosOnField().size() > 2)
-                                TetrisGameState.getInstance().clearRows();
+                            if(TetrisGameState.getInstance().getTetriminosOnField().size() > 2) {
+                                if(TetrisGameState.getInstance().clearRows())
+                                    TetrisGameState.getInstance().updateScoreLabel(tetrisMainFrame.getScoreLabel());
+                            }
+                            
                         }
                     }
                     synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
