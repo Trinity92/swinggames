@@ -37,8 +37,8 @@ public class NextTetriminoPanel extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Tetrimino t = TetrisGameState.getInstance().getTetriminoBag().get(0);
-        // TODO
+        Tetrimino t = TetrisGameState.getInstance().getNextTetriminoInLine();
+        t.paintShape(g);
     }
 
     /**
@@ -49,12 +49,6 @@ public class NextTetriminoPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tetrisPanelKeyPressed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -67,46 +61,6 @@ public class NextTetriminoPanel extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tetrisPanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tetrisPanelKeyPressed
-        // REMINDER: arrow keys do not trigger keyTyped event !!! (use keyPressed/keyReleased or Key Bindings)
-        if(TetrisGameState.getInstance().getFallingTetrimino() != null) {
-            switch(evt.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    // turn current shape to the left
-                    synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                        TetrisGameState.getInstance().getFallingTetrimino().rotateLeft();
-                    }
-                    revalidate();
-                    repaint();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    // move current shape to the left
-                    synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                        TetrisGameState.getInstance().getFallingTetrimino().moveToLeft();
-                    }
-                    revalidate();
-                    repaint();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    // turn current shape to the right
-                    synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                        TetrisGameState.getInstance().getFallingTetrimino().moveToRight();
-                    }
-                    revalidate();
-                    repaint();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    // accelerate shape downward
-                    synchronized(TetrisGameState.getInstance().getFallingTetrimino()) {
-                        TetrisGameState.getInstance().getFallingTetrimino().moveShapeDown();
-                    }
-                    revalidate();
-                    repaint();
-                    break;
-            }
-        }
-    }//GEN-LAST:event_tetrisPanelKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

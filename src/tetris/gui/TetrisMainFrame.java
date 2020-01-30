@@ -43,7 +43,6 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         btnStartGame = new javax.swing.JButton();
         tetrisPanel = new tetris.gui.TetrisPanel();
         lblStatus = new javax.swing.JLabel();
-        nextTetriminoPanel = new javax.swing.JPanel();
         lblScore = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -116,31 +115,6 @@ public class TetrisMainFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         getContentPane().add(lblStatus, gridBagConstraints);
-
-        nextTetriminoPanel.setBackground(new java.awt.Color(255, 255, 255));
-        nextTetriminoPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
-        nextTetriminoPanel.setFocusable(false);
-        nextTetriminoPanel.setMaximumSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
-        nextTetriminoPanel.setMinimumSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
-        nextTetriminoPanel.setPreferredSize(new Dimension(TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION, TetrisGameState.NEXT_TETRIMINO_PANEL_DIMENSION));
-        nextTetriminoPanel.setRequestFocusEnabled(false);
-
-        javax.swing.GroupLayout nextTetriminoPanelLayout = new javax.swing.GroupLayout(nextTetriminoPanel);
-        nextTetriminoPanel.setLayout(nextTetriminoPanelLayout);
-        nextTetriminoPanelLayout.setHorizontalGroup(
-            nextTetriminoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        nextTetriminoPanelLayout.setVerticalGroup(
-            nextTetriminoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        getContentPane().add(nextTetriminoPanel, gridBagConstraints);
 
         lblScore.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblScore.setText("<html>Score: 0<br \\><br \\><br \\>Next:");
@@ -233,9 +207,9 @@ public class TetrisMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnStartGame;
     private javax.swing.JLabel lblScore;
     private javax.swing.JLabel lblStatus;
-    private javax.swing.JPanel nextTetriminoPanel;
     private tetris.gui.TetrisPanel tetrisPanel;
     // End of variables declaration//GEN-END:variables
         
     public JLabel getScoreLabel() { return lblScore; }
+    
 }
